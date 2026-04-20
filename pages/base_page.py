@@ -44,6 +44,10 @@ class BasePage(ABC):
         self.scroll_to(locator)
         element.click()
 
+    def input(self, locator, text):
+        self.wait_element_located(locator)
+        self.driver.find_element(*locator).send_keys(text)
+
     def get_attribute(self, locator, name):
         return self.wait_element_located(locator).get_attribute(name)
 
@@ -66,7 +70,7 @@ class BasePage(ABC):
     def switch_to_window(self, handle):
         self.driver.switch_to.window(handle)
 
-    def remove_cookie_window(self, locator):
+    def remove_element_form_dom(self, locator):
         element = self.wait_element_located(locator)
         self.driver.execute_script("arguments[0].remove();", element)
 
