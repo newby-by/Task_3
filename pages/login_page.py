@@ -1,10 +1,13 @@
 import allure
 from selenium.webdriver.common.by import By
 
+import data
 from pages.base_page import BasePage
 
 @allure.title('The page object for login page')
 class LoginPage(BasePage):
+    TITLE_PAGE = (By.XPATH, ".//h2[text()='Вход']")
+    TITLE = 'Вход'
     FORGOT_PASSWORD_LINK = (By.XPATH, ".//a[text()='Восстановить пароль']")
     FIELD = lambda text: (
         By.XPATH, f".//label[text()='{text}']/following-sibling::input"
@@ -37,3 +40,12 @@ class LoginPage(BasePage):
         self.fill_up_email_field(email)
         self.fill_up_password_field(password)
         self.press_login()
+
+    @allure.step('Check Login page is available')
+    def is_page_available(self):
+        self.wait_element_clickable(LoginPage.TITLE_PAGE)
+        return (
+            self.get_url() == data.LOGIN_URL and
+            self.find_element(
+                LoginPage.TITLE_PAGE).text == LoginPage.TITLE
+        )

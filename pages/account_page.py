@@ -17,6 +17,7 @@ class AccountPage(BasePage):
     ORDER_CARDS = (
         By.XPATH, ".//ul[contains(@class, 'OrderHistory_profileList')]/li"
     )
+    EXIT_BUTTON = (By.XPATH, ".//button[text()='Выход']")
 
     @allure.step('Check Login page is available')
     def is_page_available(self):
@@ -31,6 +32,10 @@ class AccountPage(BasePage):
     def open_orders_history(self):
         self.click(AccountPage.ORDER_HISTORY_LINK)
 
+    @allure.step('Exit from account')
+    def press_exit(self):
+        self.click(AccountPage.EXIT_BUTTON)
+    
     @allure.step('History orders is available')
     def is_history_available(self):
         try:
