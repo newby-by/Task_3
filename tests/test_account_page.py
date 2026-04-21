@@ -1,11 +1,9 @@
+import time
+
 import allure
 import pytest
 
-
 import pages
-from pages.account_page import AccountPage
-from pages.login_page import LoginPage
-from pages.main_page import MainPage
 
 
 @allure.feature('Tests for account page')
@@ -32,13 +30,46 @@ class TestAccountPage:
     
     @allure.title('The exit button is available for auth user')
     @allure.description('After press exit button redirect to login page.')
-    def test_auth_user_after_press_exit_button_redirect_to_login_page(self, login_user):
+    def test_auth_user_after_press_exit_button_redirect_to_login_page(
+        self, login_user
+    ):
         nav_page = pages.NavPanelPage(login_user)
         nav_page.go_to_account()
 
-        account_page = AccountPage(nav_page.driver)
+        account_page = pages.AccountPage(nav_page.driver)
         account_page.press_exit()
 
-        login_page = LoginPage(account_page.driver)
+        login_page = pages.LoginPage(account_page.driver)
 
         assert login_page.is_page_available()
+
+    
+    @allure.title('The constructor button is available for auth user')
+    @allure.description('After press constructor '
+                        'button redirect to main page.')
+    def test_auth_user_after_press_constructor_button_redirect_to_main_page(
+        self, login_user
+    ):
+        nav_page = pages.NavPanelPage(login_user)
+        nav_page.go_to_account()
+        nav_page.go_to_constructor()
+
+        main_page = pages.MainPage(nav_page.driver)
+
+        time.sleep(20)
+
+        assert main_page.is_page_available()
+    
+    @allure.title('The orders list button is available for auth user')
+    @allure.description('After press orders list '
+                        'button redirect to orders page.')
+    def test_auth_user_after_press_orders_list_button_redirect_to_orders_page(
+        self, login_user
+    ):
+        nav_page = pages.NavPanelPage(login_user)
+        nav_page.go_to_account()
+        nav_page.go_to_orders_list()
+
+        feed_page = pages.FeedPage(nav_page.driver)
+
+        assert feed_page.is_page_available()

@@ -4,11 +4,12 @@ from utils.methods.ingredient import IngredientMethod
 
 
 BASE_URL = 'https://stellarburgers.education-services.ru'
-
 ACCOUNT_URL = BASE_URL + '/account/profile'
+CONSTRUCTOR_URL = BASE_URL + '/'
 FORGOT_PASSWORD_URL = BASE_URL + '/forgot-password'
 LOGIN_URL = BASE_URL + '/login'
 RESET_PASSWORD_URL = BASE_URL + '/reset-password'
+FEED_URL = BASE_URL + '/feed'
 
 
 class UserData:

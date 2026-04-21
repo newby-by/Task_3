@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 import data
 from pages.base_page import BasePage
 
+
 @allure.title('The page object for login page')
 class LoginPage(BasePage):
     TITLE_PAGE = (By.XPATH, ".//h2[text()='Вход']")

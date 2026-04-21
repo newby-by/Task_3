@@ -14,7 +14,7 @@ class MainPage(BasePage):
     def is_page_available(self):
         self.wait_element_clickable(MainPage.TITLE_PAGE)
         return (
-            self.get_url() == data.BASE_URL and
+            self.get_url() == data.CONSTRUCTOR_URL and
             self.find_element(MainPage.TITLE_PAGE).text ==
             MainPage.TITLE
         )
