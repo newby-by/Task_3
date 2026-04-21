@@ -1,6 +1,8 @@
 import allure
 import pytest
 
+
+import pages
 from pages.account_page import AccountPage
 from pages.login_page import LoginPage
 from pages.main_page import MainPage
@@ -20,10 +22,10 @@ class TestAccountPage:
         self, fixture, request
     ):
         driver = request.getfixturevalue(fixture)
-        main_page = MainPage(driver)
-        main_page.go_to_account()
+        nav_page = pages.NavPanelPage(driver)
+        nav_page.go_to_account()
 
-        account_page = AccountPage(main_page.driver)
+        account_page = pages.AccountPage(nav_page.driver)
         account_page.open_orders_history()
 
         assert account_page.is_history_available()
@@ -31,10 +33,10 @@ class TestAccountPage:
     @allure.title('The exit button is available for auth user')
     @allure.description('After press exit button redirect to login page.')
     def test_auth_user_after_press_exit_button_redirect_to_login_page(self, login_user):
-        main_page = MainPage(login_user)
-        main_page.go_to_account()
+        nav_page = pages.NavPanelPage(login_user)
+        nav_page.go_to_account()
 
-        account_page = AccountPage(main_page.driver)
+        account_page = AccountPage(nav_page.driver)
         account_page.press_exit()
 
         login_page = LoginPage(account_page.driver)
