@@ -1,5 +1,7 @@
 from faker import Faker
 
+from utils.methods.ingredient import IngredientMethod
+
 
 BASE_URL = 'https://stellarburgers.education-services.ru'
 
@@ -78,3 +80,61 @@ class UserData:
     def change_password(user_data, word='1'):
         user_data['password'] = user_data['password'] + word
         return user_data
+
+
+class OrderData:
+
+    def __init__(self):
+        self.faker = Faker()
+        self.ingredients = {"ingredients": []}
+        self._data = IngredientMethod(
+            url=IngredientMethod.INGREDIENT_URL).get_ingredients()
+        (self._buns,
+         self._sauce,
+         self._main,
+         self._unknown) = OrderData._get_data(self._data)
+        if self._unknown != []:
+            raise ValueError(f"Database has unknown type {self._unknown}")
+
+    @property
+    def empty_order(self):
+        return self.ingredients
+
+    @property
+    def wrong_id(self):
+        self.ingredients = {"ingredients": ["0"]}
+        return self.ingredients
+
+    @property
+    def buns_only(self):
+        self.ingredients["ingredients"] = [
+            self.faker.random_element(self._buns).get('_id')
+        ]
+        return self.ingredients
+
+    @property
+    def buns_and_sauce(self):
+        self.ingredients["ingredients"] = [
+            self.faker.random_element(self._buns).get('_id'),
+            self.faker.random_element(self._sauce).get('_id')
+        ]
+
+        return self.ingredients
+
+    @staticmethod
+    def _get_data(_data):
+        _buns = []
+        _sauce = []
+        _main = []
+        _ = []
+
+        for el in _data:
+            if el['type'] == 'bun':
+                _buns.append(el)
+            elif el['type'] == 'sauce':
+                _sauce.append(el)
+            elif el['type'] == 'main':
+                _main.append(el)
+            else:
+                _.append(el)
+        return _buns, _sauce, _main, _

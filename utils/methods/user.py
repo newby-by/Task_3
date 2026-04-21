@@ -6,6 +6,7 @@ from .base_method import BaseMethod
 class UserMethod(BaseMethod):
     BASE_URL = 'https://stellarburgers.education-services.ru/api'
     REGISTER_URL = BASE_URL + '/auth/register'
+    LOGIN_URL = BASE_URL + '/auth/login'
 
     @allure.step('Register a user with payload={payload}')
     def register(self, payload):

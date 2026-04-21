@@ -76,3 +76,7 @@ class BasePage(ABC):
 
     def get_url(self):
         return self.driver.current_url
+    
+    def find_element(self, locator):
+        self.wait_element_located(locator)
+        return self.driver.find_element(*locator)
