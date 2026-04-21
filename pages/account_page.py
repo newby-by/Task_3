@@ -18,7 +18,7 @@ class AccountPage(BasePage):
         By.XPATH, ".//ul[contains(@class, 'OrderHistory_profileList')]/li"
     )
 
-    @allure.step('Move to Account page')
+    @allure.step('Check Login page is available')
     def is_page_available(self):
         self.wait_element_clickable(AccountPage.TITLE_PAGE)
         return (
