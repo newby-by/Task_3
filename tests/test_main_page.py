@@ -1,3 +1,4 @@
+from ast import main
 import random
 
 import allure
@@ -56,3 +57,21 @@ class TestMainPage:
             main_page.find_element(MainPage.TITLE_PAGE).text ==
             MainPage.TITLE
         )
+
+    @allure.title('Drag and drop an ingredient to constructor')
+    @allure.description('The counter of an ingredient is changed')
+    def test_drag_and_drop_ingredient_counter_changed(self, login_user):
+        main_page = pages.MainPage(login_user)
+        random_card_number = random.randint(1, main_page.number_of_cards)
+        card_data_before = main_page.get_ingredient_data_from_constructor(
+            random_card_number
+        )
+
+        main_page.drag_and_drop_card_to_constructor_with(random_card_number)
+
+        card_data_after = main_page.get_ingredient_data_from_constructor(
+            random_card_number
+        )
+
+        assert (int(card_data_after.get('counter')) ==
+                int(card_data_before.get('counter')) + 1) 

@@ -1,4 +1,7 @@
+import time
+
 import allure
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 
 import data
@@ -30,6 +33,7 @@ class MainPage(pages.BasePage):
         (".//h2[text()='Детали ингредиента']/"
          "parent::div/following-sibling::button")
     )
+    CONSTRUCTOR = (By.XPATH, ".//ul[contains(@class,'BurgerConstructor')]")
 
     @allure.step('Check main page is available')
     def is_page_available(self):
@@ -97,3 +101,15 @@ class MainPage(pages.BasePage):
         return len(self.find_elements(
             (By.XPATH, MainPage.INGREDIENTS_CARDS_SELECTOR)
         ))
+
+    def drag_and_drop_card_to_constructor_with(self, number):
+        source_element = self.find_element(
+            MainPage.NUMBER_INGREDIENTS_CARDS(number)
+        )
+        target_element = self.find_element(MainPage.CONSTRUCTOR)
+
+        ActionChains(self.driver).drag_and_drop(
+            source_element, target_element
+        ).perform()
+
+        time.sleep(5)
