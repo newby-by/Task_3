@@ -82,7 +82,26 @@ def registered_user_with_2_orders(registered_user):
     )
 
     return registered_user
- 
+
+@pytest.fixture(scope='function')
+def user_with_order(registered_user):
+    response = UserMethod(UserMethod.LOGIN_URL).login(
+            payload=data.UserData.data_for_login(registered_user)
+    )
+    token = response.json().get('accessToken')
+    headers = {
+            'Authorization': token,
+            'Content-Type': 'application/json'
+        }
+    response = OrderMethod(url=OrderMethod.ORDER_URL).order(
+        payload=json.dumps(data.OrderData().buns_and_sauce),
+        headers=headers
+    )
+
+    return {
+        'login_data': data.UserData.data_for_login(registered_user),
+        'id_order': response.json().get('order').get('number')
+    }
 
 @pytest.fixture(scope='function')
 def login_data_user_without_orders(registered_user):
@@ -103,6 +122,17 @@ def login_user(login_data_user_without_orders, driver):
     login_page.fill_up_login_form(email, password)
 
     return driver
+
+@pytest.fixture(scope='function')
+def login_user_with_order(user_with_order, driver):
+    login_page = LoginPage(driver)
+    login_page.open(url=data.LOGIN_URL)
+    user_data = user_with_order['login_data']
+    email = user_data['email']
+    password = user_data['password']
+    login_page.fill_up_login_form(email, password)
+
+    return driver, user_with_order['id_order']
 
 
 @pytest.fixture(scope='function')

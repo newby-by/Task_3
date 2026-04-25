@@ -34,6 +34,14 @@ class MainPage(pages.BasePage):
          "parent::div/following-sibling::button")
     )
     CONSTRUCTOR = (By.XPATH, ".//ul[contains(@class,'BurgerConstructor')]")
+    TITLE_ORDER = "идентификатор заказа"
+    IDENTIFIER_ORDER = 1
+    ORDER_MODAL_WINDOW = lambda number: (
+        By.XPATH,
+        f"(.//section[contains(@class, 'Modal_modal_opened')]//p)[{number}]"
+    )
+    ORDER_BUTTON = (By.XPATH, ".//button[text()='Оформить заказ']")
+
 
     @allure.step('Check main page is available')
     def is_page_available(self):
@@ -102,6 +110,7 @@ class MainPage(pages.BasePage):
             (By.XPATH, MainPage.INGREDIENTS_CARDS_SELECTOR)
         ))
 
+    @allure.step('Drag and drop card {number} to constructor')
     def drag_and_drop_card_to_constructor_with(self, number):
         source_element = self.find_element(
             MainPage.NUMBER_INGREDIENTS_CARDS(number)
@@ -112,4 +121,13 @@ class MainPage(pages.BasePage):
             source_element, target_element
         ).perform()
 
-        time.sleep(5)
+    def is_order_window_available(self):
+        return (
+            self.find_element(
+                MainPage.ORDER_MODAL_WINDOW(MainPage.IDENTIFIER_ORDER)
+            ).text == MainPage.TITLE_ORDER
+        )
+
+    @allure.step('Click on order button')    
+    def click_on_order_button(self):
+        self.click(MainPage.ORDER_BUTTON)
