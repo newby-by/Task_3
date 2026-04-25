@@ -2,19 +2,98 @@ import allure
 from selenium.webdriver.common.by import By
 
 import data
-from pages.base_page import BasePage
+import pages
 
 
 @allure.title('The Page Object for main page app')
-class MainPage(BasePage):
+class MainPage(pages.BasePage):
     TITLE_PAGE = (By.XPATH, ".//h1")
     TITLE = 'Соберите бургер'
-    
+    INGREDIENTS_CARDS_SELECTOR = ".//main//ul//a"
+    NUMBER_INGREDIENTS_CARDS = lambda number: (
+        By.XPATH, f"(.//main//ul//a)[{number}]"
+    )
+    INGREDIENTS_CARDS_ATTRIBUTE = lambda number, selector: (
+        By.XPATH, f"(.//main//ul//a)[{number}]{selector}"
+    )
+    COUNTER_INGREDIENT_SELECTOR = "//p[contains(@class, 'counter')]"
+    PRICE_INGREDIENT_SELECTOR = "//p[contains(@class, 'ingredient__price')]"
+    NAME_INGREDIENT_SELECTOR = "//p[contains(@class, 'ingredient__text')]"
+    INGREDIENT_MODAL_WINDOW = lambda selector: (
+        By.XPATH, f".//section[contains(@class, 'modal_opened')]{selector}"
+    )
+    TITLE_MODAL_WINDOW_SELECTOR = "//h2"
+    TITLE_MODAL_WINDOW = "Детали ингредиента"
+    NAME_INGREDIENT_IN_MODAL_WINDOW_SELECTOR = "//p"
+    CLOSE_CARD_BUTTON = (
+        By.XPATH,
+        (".//h2[text()='Детали ингредиента']/"
+         "parent::div/following-sibling::button")
+    )
+
     @allure.step('Check main page is available')
     def is_page_available(self):
-        self.wait_element_clickable(MainPage.TITLE_PAGE)
+        self.wait_element_located(MainPage.TITLE_PAGE)
         return (
             self.get_url() == data.CONSTRUCTOR_URL and
             self.find_element(MainPage.TITLE_PAGE).text ==
             MainPage.TITLE
         )
+
+    @allure.step('Open ingredient card with number is {number}')
+    def open_ingredient_card_with(self, number):
+        self.click(MainPage.NUMBER_INGREDIENTS_CARDS(number))
+
+    @allure.step('Close ingredient card')
+    def close_ingredient_card(self):
+        self.click(MainPage.CLOSE_CARD_BUTTON)
+
+
+    @allure.step('Get ingredient data from constructor page')
+    def get_ingredient_data_from_constructor(self, number):
+        counter = self.find_element(
+            MainPage.INGREDIENTS_CARDS_ATTRIBUTE(
+                number,
+                MainPage.COUNTER_INGREDIENT_SELECTOR
+            )
+        ).text
+        price = self.find_element(
+            MainPage.INGREDIENTS_CARDS_ATTRIBUTE(
+                number,
+                MainPage.PRICE_INGREDIENT_SELECTOR
+            )
+        ).text
+        name = self.find_element(
+            MainPage.INGREDIENTS_CARDS_ATTRIBUTE(
+                number,
+                MainPage.NAME_INGREDIENT_SELECTOR
+            )
+        ).text
+        
+        return {
+            'counter': counter,
+            'price': price,
+            'name': name
+        }
+    
+    @allure.step('Get title ingredient modal window')
+    def get_title_ingredient_modal_window(self):
+        return self.find_element(
+            MainPage.INGREDIENT_MODAL_WINDOW(
+                MainPage.TITLE_MODAL_WINDOW_SELECTOR
+            )
+        ).text
+       
+    @allure.step('Get name ingredient modal window')
+    def get_name_ingredient_modal_window(self):
+        return self.find_element(
+            MainPage.INGREDIENT_MODAL_WINDOW(
+                MainPage.NAME_INGREDIENT_IN_MODAL_WINDOW_SELECTOR
+            )
+        ).text
+    
+    @property
+    def number_of_cards(self):
+        return len(self.find_elements(
+            (By.XPATH, MainPage.INGREDIENTS_CARDS_SELECTOR)
+        ))

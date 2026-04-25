@@ -80,3 +80,7 @@ class BasePage(ABC):
     def find_element(self, locator):
         self.wait_element_located(locator)
         return self.driver.find_element(*locator)
+
+    def find_elements(self, locator):
+        self.wait_element_located(locator)
+        return self.driver.find_elements(*locator)
