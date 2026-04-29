@@ -1,5 +1,3 @@
-import time
-
 import allure
 import pytest
 
@@ -55,8 +53,6 @@ class TestAccountPage:
         nav_page.go_to_constructor()
 
         main_page = pages.MainPage(nav_page.driver)
-
-        time.sleep(20)
 
         assert main_page.is_page_available()
     

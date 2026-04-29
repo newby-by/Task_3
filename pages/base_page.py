@@ -3,8 +3,10 @@ from abc import ABC
 import allure
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.expected_conditions import (
+    element_to_be_clickable,
     presence_of_element_located,
-    element_to_be_clickable
+    visibility_of_element_located,
+    text_to_be_present_in_element
 )
 
 from pages.expected_conditions import text_in_element_is_not_empty
@@ -19,14 +21,30 @@ class BasePage(ABC):
     def open(self, url):
         self.driver.get(url)
 
-    def wait_element_located(self, locator, time=10):
-        element = WebDriverWait(self.driver, time).until(
+    def wait_element_located(self, locator, timeout=10):
+        element = WebDriverWait(
+            driver=self.driver,
+            timeout=timeout).until(
             presence_of_element_located(locator)
         )
         return element
+    
+    def wait_text_in_element_disappeared(self, locator, text_, timeout=10):
+        element = WebDriverWait(
+            driver=self.driver,
+            timeout=timeout).until_not(
+            text_to_be_present_in_element(locator, text_)
+        )
+        return element
+     
+    def wait_visibility_of_element_located(self, locator, timeout=10):
+        element = WebDriverWait(self.driver, timeout).until(
+            visibility_of_element_located(locator)
+        )
+        return element
 
-    def wait_element_clickable(self, locator, time=10):
-        element = WebDriverWait(self.driver, time).until(
+    def wait_element_clickable(self, locator, timeout=10):
+        element = WebDriverWait(self.driver, timeout).until(
             element_to_be_clickable(locator)
         )
         self.scroll_to(locator)
@@ -44,6 +62,7 @@ class BasePage(ABC):
         self.scroll_to(locator)
         element.click()
 
+    @allure.step("Input text")
     def input(self, locator, text):
         self.wait_element_located(locator)
         self.driver.find_element(*locator).send_keys(text)

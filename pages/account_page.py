@@ -1,6 +1,6 @@
 import allure
-from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
 
 import data
 from pages.base_page import BasePage

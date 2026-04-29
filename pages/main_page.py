@@ -1,4 +1,4 @@
-import time
+import random
 
 import allure
 from selenium.webdriver.common.action_chains import ActionChains
@@ -34,14 +34,20 @@ class MainPage(pages.BasePage):
          "parent::div/following-sibling::button")
     )
     CONSTRUCTOR = (By.XPATH, ".//ul[contains(@class,'BurgerConstructor')]")
+    ORDER_BUTTON = (By.XPATH, ".//button[text()='Оформить заказ']")
     TITLE_ORDER = "идентификатор заказа"
     IDENTIFIER_ORDER = 1
     ORDER_MODAL_WINDOW = lambda number: (
         By.XPATH,
         f"(.//section[contains(@class, 'Modal_modal_opened')]//p)[{number}]"
     )
-    ORDER_BUTTON = (By.XPATH, ".//button[text()='Оформить заказ']")
-
+    NUMBER_ORDER_MODAL_WINDOW = (
+        By.XPATH,
+        ".//section[contains(@class, 'Modal_modal_opened')]//h2"
+    )
+    ORDER_BUTTON_WINDOW = (
+        By.XPATH, ".//section[contains(@class, 'Modal_modal_opened')]//button"
+    )
 
     @allure.step('Check main page is available')
     def is_page_available(self):
@@ -121,13 +127,41 @@ class MainPage(pages.BasePage):
             source_element, target_element
         ).perform()
 
+    def make_burger(self):
+        random_bun = random.randint(1, 2)
+        self.drag_and_drop_card_to_constructor_with(random_bun)
+        random_sauce = random.randint(3, 6)
+        self.drag_and_drop_card_to_constructor_with(random_sauce)
+        random_main = random.randint(7, self.number_of_cards)
+        self.drag_and_drop_card_to_constructor_with(random_main)
+
     def is_order_window_available(self):
+        order_number = self.get_order_number_in_window()
         return (
             self.find_element(
                 MainPage.ORDER_MODAL_WINDOW(MainPage.IDENTIFIER_ORDER)
-            ).text == MainPage.TITLE_ORDER
+            ).text == MainPage.TITLE_ORDER and
+            order_number != '9999'
         )
+    
+    def get_order_number_in_window(self):
+        self.wait_text_in_element_disappeared(
+            MainPage.NUMBER_ORDER_MODAL_WINDOW,
+            '9999',
+            timeout=20
+        )
+        return self.find_element(MainPage.NUMBER_ORDER_MODAL_WINDOW).text
 
     @allure.step('Click on order button')    
     def click_on_order_button(self):
         self.click(MainPage.ORDER_BUTTON)
+
+    @allure.step('Close the order window')    
+    def close_window(self):
+        self.wait_visibility_of_element_located(
+            MainPage.ORDER_BUTTON_WINDOW
+        )
+        self.wait_element_located(
+            MainPage.ORDER_BUTTON_WINDOW
+        )
+        self.click(MainPage.ORDER_BUTTON_WINDOW)

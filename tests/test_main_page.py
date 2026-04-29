@@ -1,9 +1,7 @@
-from ast import main
 import random
 
 import allure
 
-import data
 import pages
 from pages.main_page import MainPage
 
@@ -62,7 +60,7 @@ class TestMainPage:
     @allure.description('The counter of an ingredient is changed')
     def test_drag_and_drop_ingredient_counter_changed(self, login_user):
         main_page = pages.MainPage(login_user)
-        random_card_number = random.randint(1, main_page.number_of_cards)
+        random_card_number = random.randint(3, main_page.number_of_cards)
         card_data_before = main_page.get_ingredient_data_from_constructor(
             random_card_number
         )
@@ -80,9 +78,7 @@ class TestMainPage:
     @allure.description('By an auth user it is possible')
     def test_auth_user_can_order(self, login_user):
         main_page = pages.MainPage(login_user)
-
-        random_card_number = random.randint(1, main_page.number_of_cards)
-        main_page.drag_and_drop_card_to_constructor_with(random_card_number)
+        main_page.make_burger()
         main_page.click_on_order_button()
 
         assert main_page.is_order_window_available()

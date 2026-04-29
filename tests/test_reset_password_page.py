@@ -1,7 +1,5 @@
 import allure
 
-import data
-
 
 @allure.feature('Tests for Reset Password page')
 class TestResetPasswordPage:
