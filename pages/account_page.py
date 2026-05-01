@@ -14,9 +14,6 @@ class AccountPage(BasePage):
     HISTORY = (
         By.XPATH, ".//ul[contains(@class, 'OrderHistory_profileList')]"
     )
-    ORDER_CARDS = (
-        By.XPATH, ".//ul[contains(@class, 'OrderHistory_profileList')]/li"
-    )
     EXIT_BUTTON = (By.XPATH, ".//button[text()='Выход']")
 
     @allure.step('Check Login page is available')

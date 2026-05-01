@@ -122,11 +122,9 @@ class MainPage(pages.BasePage):
             MainPage.NUMBER_INGREDIENTS_CARDS(number)
         )
         target_element = self.find_element(MainPage.CONSTRUCTOR)
+        self.drag_and_drop(source_element, target_element)
 
-        ActionChains(self.driver).drag_and_drop(
-            source_element, target_element
-        ).perform()
-
+    @allure.step("Make some burger")
     def make_burger(self):
         random_bun = random.randint(1, 2)
         self.drag_and_drop_card_to_constructor_with(random_bun)

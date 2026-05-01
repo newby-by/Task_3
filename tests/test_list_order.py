@@ -57,3 +57,23 @@ class TestListOrder:
             f"{order_number_all_time_after}:{order_number_today_before}:"
             f"{order_number_today_after}"
         )
+
+    def test_list_orders_and_history_orders(self, login_user_with_2_orders):
+        nav_page = pages.NavPanelPage(login_user_with_2_orders)
+        nav_page.go_to_account()
+        account_page = pages.AccountPage(nav_page.driver)
+        account_page.open_orders_history()
+
+        orders_panel = pages.OrdersPanelPage(account_page.driver)
+        orders_numbers_in_account = orders_panel.get_orders_ids()
+
+        nav_page = pages.NavPanelPage(account_page.driver)
+        nav_page.go_to_orders_list()
+        
+        orders_panel = pages.OrdersPanelPage(nav_page.driver)
+        orders_numbers_in_orders_lists = orders_panel.get_orders_ids()
+
+        assert pages.OrdersPanelPage.have_ids_in_orders_lists(
+            ids_history=orders_numbers_in_account,
+            ids_orders_list=orders_numbers_in_orders_lists
+        )
