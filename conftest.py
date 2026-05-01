@@ -61,10 +61,15 @@ def user_with_all_data(user):
 
 @pytest.fixture(scope='function')
 def registered_user(user_with_all_data):
-    UserMethod(UserMethod.REGISTER_URL).register(
+    token = UserMethod(UserMethod.REGISTER_URL).register(
             payload=user_with_all_data
+    ).json().get('accessToken')
+   
+    yield user_with_all_data
+
+    UserMethod(UserMethod.USER_URL).delete_user(
+            headers={'Authorization': token}
     )
-    return user_with_all_data
 
 
 @pytest.fixture(scope='function')
@@ -76,7 +81,7 @@ def registered_user_with_2_orders(registered_user):
     headers = {
             'Authorization': token,
             'Content-Type': 'application/json'
-        }
+    }
     OrderMethod(url=OrderMethod.ORDER_URL).order(
         payload=json.dumps(data.OrderData().buns_and_sauce),
         headers=headers

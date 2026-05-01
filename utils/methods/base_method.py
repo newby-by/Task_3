@@ -32,3 +32,10 @@ class BaseMethod(ABC):
             headers=headers
         )
         return response
+
+    def delete(self, *, headers=None):
+        response = requests.delete(
+            url=self.url,
+            headers=headers
+        )
+        return response
