@@ -1,6 +1,8 @@
 import json
+import os
 
 import pytest
+from dotenv import load_dotenv
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
@@ -13,6 +15,8 @@ from utils.methods.order import OrderMethod
 from utils.methods.user import UserMethod
 
 
+load_dotenv()
+
 def pytest_addoption(parser):
     parser.addoption("--br",
                      action="store",
@@ -24,6 +28,7 @@ def pytest_addoption(parser):
 @pytest.fixture(scope='function')
 def driver(pytestconfig):
     if pytestconfig.getoption("br") == "gecko":
+        os.environ['GH_TOKEN'] = os.getenv('GH_TOKEN')
         driver = webdriver.Firefox(
             executable_path=GeckoDriverManager().install()
         )
