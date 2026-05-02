@@ -16,7 +16,7 @@ class TestMainPage:
         self, login_user
     ):
         nav_page = pages.NavPanelPage(login_user)
-        nav_page.go_to_account()    
+        nav_page.go_to_account()
         account_page = pages.AccountPage(nav_page.driver)
 
         assert account_page.is_page_available()
@@ -39,7 +39,7 @@ class TestMainPage:
             MainPage.TITLE_MODAL_WINDOW
             and
             main_page.get_name_ingredient_modal_window() ==
-            expected_data.get('name') 
+            expected_data.get('name')
         )
 
     @allure.title('An ingredient card')
@@ -72,8 +72,8 @@ class TestMainPage:
         )
 
         assert (int(card_data_after.get('counter')) ==
-                int(card_data_before.get('counter')) + 1) 
-    
+                int(card_data_before.get('counter')) + 1)
+
     @allure.title('Create an order')
     @allure.description('By an auth user it is possible')
     def test_auth_user_can_order(self, login_user):

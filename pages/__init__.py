@@ -1,10 +1,10 @@
-from .account_page import AccountPage
-from .base_page import BasePage
-from .forgot_password_page import ForgotPasswordPage
-from .login_page import LoginPage
-from .main_page import MainPage
-from .order_list_page import FeedPage
-from .reset_password_page import ResetPasswordPage
+from .account_page import AccountPage  # noqa: F401
+from .base_page import BasePage  # noqa: F401
+from .forgot_password_page import ForgotPasswordPage  # noqa: F401
+from .login_page import LoginPage  # noqa: F401
+from .main_page import MainPage  # noqa: F401
+from .order_list_page import FeedPage  # noqa: F401
+from .reset_password_page import ResetPasswordPage  # noqa: F401
 # Panels
-from .nav_panel import NavPanelPage
-from .orders_panel import OrdersPanelPage
+from .nav_panel import NavPanelPage  # noqa: F401
+from .orders_panel import OrdersPanelPage  # noqa: F401

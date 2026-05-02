@@ -32,7 +32,7 @@ class AccountPage(BasePage):
     @allure.step('Exit from account')
     def press_exit(self):
         self.click(AccountPage.EXIT_BUTTON)
-    
+
     @allure.step('History orders is available')
     def is_history_available(self):
         try:

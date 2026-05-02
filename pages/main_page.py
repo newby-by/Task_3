@@ -1,7 +1,6 @@
 import random
 
 import allure
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 
 import data
@@ -66,7 +65,6 @@ class MainPage(pages.BasePage):
     def close_ingredient_card(self):
         self.click(MainPage.CLOSE_CARD_BUTTON)
 
-
     @allure.step('Get ingredient data from constructor page')
     def get_ingredient_data_from_constructor(self, number):
         counter = self.find_element(
@@ -87,13 +85,13 @@ class MainPage(pages.BasePage):
                 MainPage.NAME_INGREDIENT_SELECTOR
             )
         ).text
-        
+
         return {
             'counter': counter,
             'price': price,
             'name': name
         }
-    
+
     @allure.step('Get title ingredient modal window')
     def get_title_ingredient_modal_window(self):
         return self.find_element(
@@ -101,7 +99,7 @@ class MainPage(pages.BasePage):
                 MainPage.TITLE_MODAL_WINDOW_SELECTOR
             )
         ).text
-       
+
     @allure.step('Get name ingredient modal window')
     def get_name_ingredient_modal_window(self):
         return self.find_element(
@@ -109,7 +107,7 @@ class MainPage(pages.BasePage):
                 MainPage.NAME_INGREDIENT_IN_MODAL_WINDOW_SELECTOR
             )
         ).text
-    
+
     @property
     def number_of_cards(self):
         return len(self.find_elements(
@@ -141,7 +139,7 @@ class MainPage(pages.BasePage):
             ).text == MainPage.TITLE_ORDER and
             order_number != '9999'
         )
-    
+
     def get_order_number_in_window(self):
         self.wait_text_in_element_disappeared(
             MainPage.NUMBER_ORDER_MODAL_WINDOW,
@@ -150,11 +148,11 @@ class MainPage(pages.BasePage):
         )
         return self.find_element(MainPage.NUMBER_ORDER_MODAL_WINDOW).text
 
-    @allure.step('Click on order button')    
+    @allure.step('Click on order button')
     def click_on_order_button(self):
         self.click(MainPage.ORDER_BUTTON)
 
-    @allure.step('Close the order window')    
+    @allure.step('Close the order window')
     def close_window(self):
         self.wait_visibility_of_element_located(
             MainPage.ORDER_BUTTON_WINDOW

@@ -11,7 +11,9 @@ class TestForgotPasswordPage:
     @allure.title('Form Восстановление пароля')
     @allure.description('After input an email and press button '
                         '"Восстановить" move to reset password page')
-    def test_after_fill_up_form_and_click_button_redirect_to_reset_password_page(self, driver):
+    def test_after_fill_up_form_and_click_btn_redirect_to_reset_password_page(
+        self, driver
+    ):
         forgot_password_page = ForgotPasswordPage(driver)
         forgot_password_page.open(data.FORGOT_PASSWORD_URL)
         forgot_password_page.fill_email_up(data.UserData().email)

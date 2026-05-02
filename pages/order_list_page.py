@@ -13,7 +13,8 @@ class FeedPage(pages.BasePage):
     )
     ORDER_CARD_BY_ID = lambda id: (
         By.XPATH,
-        f".//ul[contains(@class, 'OrderFeed_list')]//p[contains(text(),'{id}')]"
+        (".//ul[contains(@class, 'OrderFeed_list')]"
+         f"//p[contains(text(),'{id}')]")
     )
     ORDER_CARD_LINK = lambda id: (
         By.XPATH,
@@ -50,14 +51,14 @@ class FeedPage(pages.BasePage):
 
     def get_id_order_in_window(self):
         return self.find_element(FeedPage.ORDER_ID_IN_WINDOW).text
-    
+
     def get_id_order_in_progress(self):
         self.wait_visibility_of_element_located(FeedPage.ORDER_IN_PROGRESS)
         self.wait_text_in_element_disappeared(
             FeedPage.ORDER_IN_PROGRESS, 'Все текущие заказы готовы!'
         )
         return self.find_element(FeedPage.ORDER_IN_PROGRESS).text
-    
+
     def get_orders_number_all_time(self):
         return self.find_element(FeedPage.ORDERS_NUMBER_ALL_TIME).text
 

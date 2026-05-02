@@ -5,9 +5,6 @@ import pages
 
 
 class OrdersPanelPage(pages.BasePage):
-    # HISTORY = (
-    #     By.XPATH, ".//ul[contains(@class, 'OrderHistory_profileList')]"
-    # )
     ORDER_CARD = (
         By.XPATH, ".//li[contains(@class, 'OrderHistory_listItem')]"
     )
@@ -20,7 +17,9 @@ class OrdersPanelPage(pages.BasePage):
     @allure.step('Get ids orders')
     def get_orders_ids(self):
         self.wait_element_located(OrdersPanelPage.ORDERS_NUMBERS_IN_HISTORY)
-        elements = self.find_elements(OrdersPanelPage.ORDERS_NUMBERS_IN_HISTORY)
+        elements = self.find_elements(
+            OrdersPanelPage.ORDERS_NUMBERS_IN_HISTORY
+        )
 
         return OrdersPanelPage.get_text_from_elements(elements)
 

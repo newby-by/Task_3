@@ -1,5 +1,3 @@
-import  time
-
 import allure
 import pytest
 
@@ -14,7 +12,7 @@ class TestAccountPage:
                         'User could has orders or not.')
     @pytest.mark.parametrize(
         'fixture',
-         ['login_user', 'login_user_with_2_orders']
+        ['login_user', 'login_user_with_2_orders']
     )
     def test_auth_user_can_see_order_history_in_account_page(
         self, fixture, request
@@ -27,7 +25,7 @@ class TestAccountPage:
         account_page.open_orders_history()
 
         assert account_page.is_history_available()
-    
+
     @allure.title('The exit button is available for auth user')
     @allure.description('After press exit button redirect to login page.')
     def test_auth_user_after_press_exit_button_redirect_to_login_page(
@@ -43,7 +41,6 @@ class TestAccountPage:
 
         assert login_page.is_page_available()
 
-    
     @allure.title('The constructor button is available for auth user')
     @allure.description('After press constructor '
                         'button redirect to main page.')
@@ -57,7 +54,7 @@ class TestAccountPage:
         main_page = pages.MainPage(nav_page.driver)
 
         assert main_page.is_page_available()
-    
+
     @allure.title('The orders list button is available for auth user')
     @allure.description('After press orders list '
                         'button redirect to orders page.')

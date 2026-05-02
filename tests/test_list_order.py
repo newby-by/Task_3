@@ -13,7 +13,7 @@ class TestListOrder:
         feed_page.open(data.FEED_URL)
 
         feed_page.open_card_by_id(id)
-        
+
         assert int(feed_page.get_id_order_in_window().split('#')[1]) == id
 
     @allure.title('Create an order')
@@ -34,7 +34,7 @@ class TestListOrder:
         main_page.make_burger()
         main_page.click_on_order_button()
         id_order = main_page.get_order_number_in_window()
-     
+
         main_page.close_window()
 
         nav_panel = pages.NavPanelPage(main_page.driver)
@@ -45,15 +45,16 @@ class TestListOrder:
         order_number_today_after = feed_page.get_orders_number_today()
         id_order_in_progress = feed_page.get_id_order_in_progress()
 
-
         assert (
-            int(order_number_all_time_after) > int(order_number_all_time_before)
+            int(order_number_all_time_after) >
+            int(order_number_all_time_before)
             and
             int(order_number_today_after) > int(order_number_today_before)
             and
             int(id_order_in_progress) == int(id_order)
         ), (
-            f"{id_order}:{id_order_in_progress}:{order_number_all_time_before}:"
+            f"{id_order}:{id_order_in_progress}:"
+            f"{order_number_all_time_before}:"
             f"{order_number_all_time_after}:{order_number_today_before}:"
             f"{order_number_today_after}"
         )
@@ -69,7 +70,7 @@ class TestListOrder:
 
         nav_page = pages.NavPanelPage(account_page.driver)
         nav_page.go_to_orders_list()
-        
+
         orders_panel = pages.OrdersPanelPage(nav_page.driver)
         orders_numbers_in_orders_lists = orders_panel.get_orders_ids()
 

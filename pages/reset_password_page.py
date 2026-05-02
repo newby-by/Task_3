@@ -11,7 +11,9 @@ class ResetPasswordPage(BasePage):
         By.XPATH, ".//label[text()='Пароль']/following-sibling::input"
     )
     PIN_LABEL_FIELD = (By.XPATH, ".//label[text()='Введите код из письма']")
-    SHOW_PASSWORD_BUTTON = (By.XPATH, ".//div[contains(@class, 'input__icon')]")
+    SHOW_PASSWORD_BUTTON = (
+        By.XPATH, ".//div[contains(@class, 'input__icon')]"
+    )
 
     @allure.step('Click on visibility password icon')
     def show_password(self):
@@ -34,8 +36,8 @@ class ResetPasswordPage(BasePage):
         self.wait_element_located(ResetPasswordPage.PASSWORD_FIELD)
         return self.get_attribute(ResetPasswordPage.PASSWORD_FIELD,
                                   'type') == 'text'
-    
+
     def is_active_field_password(self):
         self.wait_element_located(ResetPasswordPage.PASSWORD_FIELD)
-        return (ResetPasswordPage.ACTIVE_FIELD_CLASS in 
+        return (ResetPasswordPage.ACTIVE_FIELD_CLASS in
                 self.get_attribute(ResetPasswordPage.PASSWORD_FIELD, 'class'))

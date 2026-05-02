@@ -17,6 +17,7 @@ from utils.methods.user import UserMethod
 
 load_dotenv()
 
+
 def pytest_addoption(parser):
     parser.addoption("--br",
                      action="store",
@@ -62,25 +63,25 @@ def user_with_all_data(user):
 @pytest.fixture(scope='function')
 def registered_user(user_with_all_data):
     token = UserMethod(UserMethod.REGISTER_URL).register(
-            payload=user_with_all_data
+        payload=user_with_all_data
     ).json().get('accessToken')
-   
+
     yield user_with_all_data
 
     UserMethod(UserMethod.USER_URL).delete_user(
-            headers={'Authorization': token}
+        headers={'Authorization': token}
     )
 
 
 @pytest.fixture(scope='function')
 def registered_user_with_2_orders(registered_user):
     response = UserMethod(UserMethod.LOGIN_URL).login(
-            payload=data.UserData.data_for_login(registered_user)
+        payload=data.UserData.data_for_login(registered_user)
     )
     token = response.json().get('accessToken')
     headers = {
-            'Authorization': token,
-            'Content-Type': 'application/json'
+        'Authorization': token,
+        'Content-Type': 'application/json'
     }
     OrderMethod(url=OrderMethod.ORDER_URL).order(
         payload=json.dumps(data.OrderData().buns_and_sauce),
@@ -93,16 +94,17 @@ def registered_user_with_2_orders(registered_user):
 
     return registered_user
 
+
 @pytest.fixture(scope='function')
 def user_with_order(registered_user):
     response = UserMethod(UserMethod.LOGIN_URL).login(
-            payload=data.UserData.data_for_login(registered_user)
+        payload=data.UserData.data_for_login(registered_user)
     )
     token = response.json().get('accessToken')
     headers = {
-            'Authorization': token,
-            'Content-Type': 'application/json'
-        }
+        'Authorization': token,
+        'Content-Type': 'application/json'
+    }
     response = OrderMethod(url=OrderMethod.ORDER_URL).order(
         payload=json.dumps(data.OrderData().buns_and_sauce),
         headers=headers
@@ -112,6 +114,7 @@ def user_with_order(registered_user):
         'login_data': data.UserData.data_for_login(registered_user),
         'id_order': response.json().get('order').get('number')
     }
+
 
 @pytest.fixture(scope='function')
 def login_data_user_without_orders(registered_user):
@@ -132,6 +135,7 @@ def login_user(login_data_user_without_orders, driver):
     login_page.fill_up_login_form(email, password)
 
     return driver
+
 
 @pytest.fixture(scope='function')
 def login_user_with_order(user_with_order, driver):

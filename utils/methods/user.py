@@ -18,7 +18,7 @@ class UserMethod(BaseMethod):
     def login(self, payload):
         response = self.post(payload=payload)
         return response
-    
+
     @allure.step('Delete a user with payload={headers}')
     def delete_user(self, headers):
         response = self.delete(headers=headers)

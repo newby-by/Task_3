@@ -31,21 +31,21 @@ class BasePage(ABC):
             timeout=timeout).until(
             presence_of_element_located(locator)
         )
-    
+
     def wait_text_in_element_disappeared(self, locator, text_, timeout=10):
         WebDriverWait(
             driver=self.driver,
             timeout=timeout).until_not(
             text_to_be_present_in_element(locator, text_)
         )
-    
+
     def wait_element_disappeared(self, locator, timeout=10):
         WebDriverWait(
             driver=self.driver,
             timeout=timeout).until_not(
             presence_of_element_located(locator)
         )
-     
+
     def wait_visibility_of_element_located(self, locator, timeout=10):
         WebDriverWait(self.driver, timeout).until(
             visibility_of_element_located(locator)
@@ -110,7 +110,7 @@ class BasePage(ABC):
 
     def get_url(self):
         return self.driver.current_url
-    
+
     def find_element(self, locator):
         self.wait_element_located(locator)
         return self.driver.find_element(*locator)
